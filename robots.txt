@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Disallow admin panel from being indexed
+Disallow: /admin.html
+
+Sitemap: https://yourblog.com/sitemap.xml

@@ -1,0 +1,11 @@
+[
+  {
+    "slug": "hello-world",
+    "title": "Hello, World — Why I Started This Blog",
+    "excerpt": "Every blog starts with a first post. Here's mine: what this space is about, what I plan to write, and why I decided to build my own corner of the internet instead of posting on social media.",
+    "tags": ["meta", "writing"],
+    "date": "2026-07-29",
+    "readtime": "3 min read",
+    "featured": true
+  }
+]

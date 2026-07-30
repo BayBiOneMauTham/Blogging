@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SITEMAP — HOW TO UPDATE
+  ════════════════════════
+  When you add a new post:
+    1. Add a new <url> block below (copy an existing one)
+    2. Update <loc> with the full URL to the new post
+    3. Update <lastmod> with today's date (YYYY-MM-DD format)
+    4. <changefreq> for posts: "monthly" or "yearly"
+    5. <priority>: 0.8 for posts, 1.0 for homepage, 0.5 for other pages
+
+  Submit to Google Search Console after updating:
+    https://search.google.com/search-console
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://yourblog.com/</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Blog listing -->
+  <url>
+    <loc>https://yourblog.com/blog.html</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Notes page -->
+  <url>
+    <loc>https://yourblog.com/notes.html</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- About page -->
+  <url>
+    <loc>https://yourblog.com/about.html</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- ── POSTS — add new ones here (newest first) ── -->
+
+  <url>
+    <loc>https://yourblog.com/posts/hello-world.html</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>

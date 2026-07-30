@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Name · Blog</title>
+  <meta name="description" content="Thoughts on technology, design, and things worth writing about. A personal blog by Your Name.">
+  <meta name="author" content="Your Name">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://yourblog.com/">
+  <meta property="og:title"       content="Your Name · Blog">
+  <meta property="og:description" content="Thoughts on technology, design, and things worth writing about.">
+  <meta property="og:image"       content="https://yourblog.com/images/og-default.png">
+  <meta name="twitter:card"       content="summary_large_image">
+  <meta name="twitter:site"       content="@yourhandle">
+  <meta name="twitter:title"      content="Your Name · Blog">
+  <meta name="twitter:description" content="Thoughts on technology, design, and things worth writing about.">
+  <meta name="twitter:image"      content="https://yourblog.com/images/og-default.png">
+  <link rel="canonical" href="https://yourblog.com/">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","name":"Your Name · Blog","url":"https://yourblog.com/","author":{"@type":"Person","name":"Your Name","url":"https://yourblog.com/about.html"}}
+  </script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-body">
+
+<header class="nav" role="banner">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">your<span>.</span>blog</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html"  class="nav-link">Home</a>
+      <a href="blog.html"   class="nav-link">Blog</a>
+      <a href="notes.html"  class="nav-link">Notes</a>
+      <a href="about.html"  class="nav-link">About</a>
+    </nav>
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="nav-mobile" role="navigation" aria-label="Mobile navigation">
+  <a href="index.html"  class="nav-link">Home</a>
+  <a href="blog.html"   class="nav-link">Blog</a>
+  <a href="notes.html"  class="nav-link">Notes</a>
+  <a href="about.html"  class="nav-link">About</a>
+</div>
+
+<main>
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <span class="hero-eyebrow">Personal Blog</span>
+        <h1 class="hero-title">Writing things<br>worth <em>reading.</em></h1>
+        <p class="hero-sub">A space for thoughts on technology, design, and whatever catches my attention. No algorithm, no noise — just writing.</p>
+        <a href="blog.html" class="hero-cta">
+          Read the blog
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURED POSTS — rendered from posts.json ── -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Featured</h2>
+        <a href="blog.html" class="section-link">All posts →</a>
+      </div>
+      <div class="posts-grid featured" id="featured-grid">
+        <!-- auto-populated by posts.json -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RECENT POSTS — rendered from posts.json ── -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Recent Posts</h2>
+        <a href="blog.html" class="section-link">See all →</a>
+      </div>
+      <div class="posts-grid" id="recent-grid">
+        <!-- auto-populated by posts.json -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NEWSLETTER ── -->
+  <section>
+    <div class="container">
+      <div class="newsletter-section">
+        <p class="newsletter-eyebrow">Newsletter</p>
+        <h2 class="newsletter-title">Stay in the loop.</h2>
+        <p class="newsletter-sub">New posts delivered to your inbox. No spam — just writing when it's ready.</p>
+        <div class="substack-embed-wrapper">
+          <!-- Replace YOUR-SUBSTACK-NAME with your actual username -->
+          <iframe src="https://YOUR-SUBSTACK-NAME.substack.com/embed" width="480" height="150"
+            style="border:1px solid var(--border);background:var(--bg-card);border-radius:8px;"
+            frameborder="0" scrolling="no" title="Subscribe to newsletter"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <p class="footer-copy">© 2026 Your Name. All rights reserved.</p>
+      <nav class="footer-links">
+        <a href="sitemap.xml" class="footer-link">Sitemap</a>
+        <a href="about.html"  class="footer-link">About</a>
+        <a href="https://twitter.com/yourhandle"  class="footer-link" target="_blank" rel="noopener">Twitter / X</a>
+        <a href="https://github.com/yourusername" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var d={visits:[]};
+  try{d=JSON.parse(localStorage.getItem('blog_analytics'))||d;}catch(e){}
+  d.visits.push({page:location.pathname,title:document.title.split(' · ')[0],ts:Date.now()});
+  if(d.visits.length>500)d.visits=d.visits.slice(-500);
+  localStorage.setItem('blog_analytics',JSON.stringify(d));
+})();
+</script>
+<script src="script.js"></script>
+</body>
+</html>

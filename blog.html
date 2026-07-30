@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog · Your Name</title>
+  <meta name="description" content="All posts by Your Name — thoughts on technology, design, and whatever catches my attention.">
+  <meta name="author" content="Your Name">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://yourblog.com/blog.html">
+  <meta property="og:title"       content="Blog · Your Name">
+  <meta property="og:description" content="All posts by Your Name.">
+  <meta property="og:image"       content="https://yourblog.com/images/og-default.png">
+  <meta name="twitter:card"       content="summary_large_image">
+  <link rel="canonical" href="https://yourblog.com/blog.html">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-body">
+
+<header class="nav" role="banner">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">your<span>.</span>blog</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html"  class="nav-link">Home</a>
+      <a href="blog.html"   class="nav-link">Blog</a>
+      <a href="notes.html"  class="nav-link">Notes</a>
+      <a href="about.html"  class="nav-link">About</a>
+    </nav>
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="nav-mobile">
+  <a href="index.html"  class="nav-link">Home</a>
+  <a href="blog.html"   class="nav-link">Blog</a>
+  <a href="notes.html"  class="nav-link">Notes</a>
+  <a href="about.html"  class="nav-link">About</a>
+</div>
+
+<main>
+  <div class="page-hero">
+    <div class="container">
+      <h1 class="page-title">All Posts</h1>
+      <p class="page-subtitle">Everything I've written — filter by tag below.</p>
+    </div>
+  </div>
+
+  <div class="container" style="padding-bottom:96px;">
+    <!-- Tag filter — auto-populated from posts.json -->
+    <div class="tag-filter" id="tag-filter" role="group" aria-label="Filter posts by tag">
+      <button class="tag-btn active" data-tag="all">All</button>
+    </div>
+
+    <!-- Post grid — auto-populated from posts.json -->
+    <div class="posts-grid" id="blog-grid"></div>
+
+    <p class="no-results" id="no-results">No posts found for this tag.</p>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <p class="footer-copy">© 2026 Your Name. All rights reserved.</p>
+      <nav class="footer-links">
+        <a href="sitemap.xml" class="footer-link">Sitemap</a>
+        <a href="about.html"  class="footer-link">About</a>
+        <a href="https://twitter.com/yourhandle"  class="footer-link" target="_blank" rel="noopener">Twitter / X</a>
+        <a href="https://github.com/yourusername" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var d={visits:[]};
+  try{d=JSON.parse(localStorage.getItem('blog_analytics'))||d;}catch(e){}
+  d.visits.push({page:location.pathname,title:document.title.split(' · ')[0],ts:Date.now()});
+  if(d.visits.length>500)d.visits=d.visits.slice(-500);
+  localStorage.setItem('blog_analytics',JSON.stringify(d));
+})();
+</script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<!--
+╔══════════════════════════════════════════════════════════════╗
+║  ADMIN PANEL — KEEP THIS FILE PRIVATE                        ║
+║  ─────────────────────────────────────────────────────────── ║
+║  This file is password-protected in the browser.             ║
+║  The password is hashed (SHA-256) and stored below.          ║
+║                                                              ║
+║  TO CHANGE YOUR PASSWORD:                                    ║
+║    1. Open your browser console on any page                  ║
+║    2. Run: crypto.subtle.digest('SHA-256',                   ║
+║             new TextEncoder().encode('your-new-password'))   ║
+║             .then(b => console.log(                          ║
+║               [...new Uint8Array(b)]                         ║
+║               .map(x=>x.toString(16).padStart(2,'0'))        ║
+║               .join('')))                                    ║
+║    3. Replace ADMIN_HASH below with the new hash             ║
+║                                                              ║
+║  TEMPORARY CREDENTIALS (change immediately):                 ║
+║    Username: admin                                           ║
+║    Password: Blog@2026!                                      ║
+║                                                              ║
+║  robots.txt already disallows /admin.html from indexing.     ║
+╚══════════════════════════════════════════════════════════════╝
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin · Blog Editor</title>
+  <!-- Prevent indexing of admin panel -->
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Admin-specific styles ── */
+    body { overflow: hidden; }
+
+    /* ── Login Screen ── */
+    #login-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 24px;
+    }
+
+    .login-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      width: 100%;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .login-logo {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .login-logo span { color: var(--accent); }
+
+    .login-title {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .login-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .login-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .login-input {
+      padding: 10px 14px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .login-input:focus { border-color: var(--accent); }
+
+    .login-btn {
+      padding: 11px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--bg);
+      background: var(--accent);
+      border-radius: var(--radius);
+      transition: opacity 0.2s;
+      width: 100%;
+      border: none;
+      cursor: pointer;
+    }
+    .login-btn:hover { opacity: 0.88; }
+
+    .login-error {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--danger);
+      text-align: center;
+      display: none;
+    }
+    .login-error.visible { display: block; }
+
+    /* ── Admin App (hidden until logged in) ── */
+    #admin-app {
+      display: none;
+      height: 100vh;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #admin-app.visible { display: flex; }
+
+    /* ── Admin Nav ── */
+    .admin-nav {
+      height: var(--nav-h);
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .admin-nav-logo {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .admin-nav-logo span { color: var(--accent); }
+
+    .admin-nav-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .admin-nav-spacer { flex: 1; }
+
+    /* Post meta inputs in nav */
+    .admin-meta-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .admin-meta-bar input {
+      padding: 6px 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .admin-meta-bar input:focus { border-color: var(--accent); }
+    #meta-title { width: 240px; }
+    #meta-tags  { width: 180px; }
+    #meta-slug  { width: 180px; }
+    #meta-date  { width: 130px; }
+    #meta-readtime { width: 100px; }
+
+    .admin-btn {
+      padding: 7px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: var(--radius);
+      transition: opacity 0.2s, background 0.2s;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .admin-btn-primary {
+      color: var(--bg);
+      background: var(--accent);
+    }
+    .admin-btn-primary:hover { opacity: 0.88; }
+    .admin-btn-ghost {
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid var(--border);
+    }
+    .admin-btn-ghost:hover { border-color: var(--border-hover); color: var(--text); }
+    .admin-btn-danger {
+      color: var(--danger);
+      background: transparent;
+      border: 1px solid rgba(255, 107, 107, 0.3);
+    }
+    .admin-btn-danger:hover { background: rgba(255,107,107,0.1); }
+
+    /* ── Editor Layout ── */
+    .admin-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .editor-pane, .preview-pane {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pane-header {
+      padding: 10px 20px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pane-divider {
+      width: 1px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    /* Markdown textarea */
+    #markdown-input {
+      flex: 1;
+      padding: 24px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.7;
+      background: var(--bg);
+      color: var(--text);
+      border: none;
+      outline: none;
+      resize: none;
+      width: 100%;
+    }
+    #markdown-input::placeholder { color: var(--text-faint); }
+
+    /* Preview pane */
+    .preview-content {
+      padding: 40px 48px;
+      max-width: 720px;
+    }
+
+    .preview-title {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .preview-meta {
+      display: flex;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Publish confirm toast */
+    #publish-confirm {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius-lg);
+      padding: 14px 20px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+      z-index: 500;
+      display: none;
+      gap: 10px;
+      align-items: center;
+      max-width: 420px;
+    }
+    #publish-confirm.visible { display: flex; }
+    .publish-confirm-icon {
+      color: var(--accent);
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .publish-confirm-text { flex: 1; line-height: 1.4; }
+    .publish-confirm-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* Word count */
+    .word-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+    }
+
+    /* Toolbar */
+    .editor-toolbar {
+      padding: 8px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+    .toolbar-btn {
+      padding: 4px 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+    }
+    .toolbar-btn:hover { color: var(--text); background: var(--bg); }
+
+    .toolbar-sep {
+      width: 1px;
+      background: var(--border);
+      margin: 2px 4px;
+    }
+
+    /* ── Tab switcher ── */
+    .admin-tabs {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin-left: 16px;
+    }
+    .admin-tab {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      background: none;
+      cursor: pointer;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+    }
+    .admin-tab:hover { color: var(--text); background: var(--bg-card); }
+    .admin-tab.active {
+      color: var(--text);
+      background: var(--bg-card);
+      border-color: var(--border);
+    }
+
+    /* ── Analytics view ── */
+    #analytics-view {
+      display: none;
+      flex: 1;
+      overflow-y: auto;
+      padding: 32px 40px;
+      background: var(--bg);
+    }
+    #analytics-view.visible { display: block; }
+
+    .analytics-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .analytics-title {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .analytics-subtitle {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+    }
+
+    /* Stat cards row */
+    .stat-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+    }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      line-height: 1;
+    }
+    .stat-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      margin-top: 6px;
+    }
+    .stat-up   { color: #2d8a4e; }
+    .stat-down { color: var(--accent); }
+
+    /* Analytics grid */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 900px) { .analytics-grid { grid-template-columns: 1fr; } }
+
+    .analytics-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .analytics-card-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .analytics-card-body { padding: 8px 0; }
+
+    /* Top pages list */
+    .top-page-row {
+      display: flex;
+      align-items: center;
+      padding: 9px 20px;
+      gap: 12px;
+      transition: background 0.15s;
+    }
+    .top-page-row:hover { background: var(--bg-card-hover); }
+    .top-page-rank {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      width: 16px;
+      flex-shrink: 0;
+      text-align: center;
+    }
+    .top-page-name {
+      flex: 1;
+      font-size: 13px;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .top-page-bar-wrap {
+      width: 80px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .top-page-bar {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.6s var(--ease-out);
+    }
+    .top-page-views {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      width: 36px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* Activity feed */
+    .activity-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .activity-row:last-child { border-bottom: none; }
+    .activity-row:hover { background: var(--bg-card-hover); }
+    .activity-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+    .activity-dot.dot-new { background: #2d8a4e; }
+    .activity-text {
+      flex: 1;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .activity-time {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Mini chart (sparkline) */
+    .sparkline-wrap {
+      padding: 16px 20px 20px;
+    }
+    .sparkline-labels {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      margin-bottom: 6px;
+    }
+    .sparkline svg { width: 100%; height: 64px; display: block; }
+
+    /* Umami section */
+    .umami-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .umami-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .umami-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .umami-setup {
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .umami-setup p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto 16px;
+    }
+    .umami-setup code {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 6px;
+      color: var(--text);
+    }
+    .umami-steps {
+      text-align: left;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .umami-step {
+      display: flex;
+      gap: 12px;
+      padding: 8px 0;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .umami-step-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      width: 18px;
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+    .umami-input-row {
+      display: flex;
+      gap: 8px;
+      max-width: 480px;
+      margin: 20px auto 0;
+    }
+    .umami-url-input {
+      flex: 1;
+      padding: 9px 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      outline: none;
+    }
+    .umami-url-input:focus { border-color: var(--accent); }
+    #umami-iframe-wrap { display: none; }
+    #umami-iframe-wrap iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      display: block;
+    }
+
+    .clear-btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .clear-btn:hover { color: var(--accent); background: var(--accent-dim); }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     LOGIN SCREEN
+══════════════════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div>
+      <p class="login-logo">your<span>.</span>blog</p>
+      <h1 class="login-title">Admin Panel</h1>
+    </div>
+
+    <form id="login-form" autocomplete="off">
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="login-field">
+          <label class="login-label" for="login-user">Username</label>
+          <input type="text" id="login-user" class="login-input" placeholder="admin" autocomplete="username">
+        </div>
+        <div class="login-field">
+          <label class="login-label" for="login-pass">Password</label>
+          <input type="password" id="login-pass" class="login-input" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <p class="login-error" id="login-error">Invalid username or password.</p>
+        <button type="submit" class="login-btn">Sign in →</button>
+      </div>
+    </form>
+
+    <p style="font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); text-align: center; line-height: 1.5;">
+      Viewers go to <a href="index.html" style="color: var(--text-muted);">index.html</a>
+    </p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     ADMIN APPLICATION
+══════════════════════════════════════════════════════ -->
+<div id="admin-app">
+
+  <!-- Admin Navigation -->
+  <nav class="admin-nav">
+    <span class="admin-nav-logo">your<span>.</span>blog</span>
+    <span class="admin-nav-badge">Admin</span>
+
+    <!-- Tab switcher -->
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="editor">Editor</button>
+      <button class="admin-tab"        data-tab="analytics">Analytics</button>
+    </div>
+
+    <!-- Post meta (editor only) -->
+    <div class="admin-meta-bar" id="editor-meta-bar" style="margin-left: 16px;">
+      <input type="text"  id="meta-title"    placeholder="Post title..."   title="Post title">
+      <input type="text"  id="meta-slug"     placeholder="post-slug"       title="URL slug (e.g. my-post)">
+      <input type="text"  id="meta-tags"     placeholder="tag1, tag2"      title="Comma-separated tags">
+      <input type="date"  id="meta-date"     title="Publish date">
+      <input type="text"  id="meta-readtime" placeholder="5 min read"      title="Reading time estimate">
+      <label style="display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:12px;color:var(--text-muted);cursor:pointer;white-space:nowrap;" title="Pin to Featured section on homepage">
+        <input type="checkbox" id="meta-featured" style="accent-color:var(--accent);cursor:pointer;"> Featured
+      </label>
+    </div>
+
+    <div class="admin-nav-spacer"></div>
+
+    <button class="admin-btn admin-btn-ghost"   id="btn-preview-toggle">Split view</button>
+    <button class="admin-btn admin-btn-primary"  id="btn-generate">Publish Post ↓</button>
+    <button class="admin-btn admin-btn-danger"   id="btn-logout">Logout</button>
+  </nav>
+
+  <!-- Editor Body -->
+  <div class="admin-body" id="editor-view">
+
+    <!-- Markdown Editor Pane -->
+    <div class="editor-pane">
+      <div class="pane-header">
+        <span>Markdown</span>
+        <span class="word-count" id="word-count">0 words</span>
+      </div>
+
+      <!-- Formatting Toolbar -->
+      <div class="editor-toolbar">
+        <button class="toolbar-btn" data-action="bold"       title="Bold (Ctrl+B)">**B**</button>
+        <button class="toolbar-btn" data-action="italic"     title="Italic (Ctrl+I)">*I*</button>
+        <button class="toolbar-btn" data-action="h2"         title="Heading 2">H2</button>
+        <button class="toolbar-btn" data-action="h3"         title="Heading 3">H3</button>
+        <span class="toolbar-sep"></span>
+        <button class="toolbar-btn" data-action="link"       title="Link">🔗</button>
+        <button class="toolbar-btn" data-action="image"      title="Image">🖼</button>
+        <button class="toolbar-btn" data-action="code"       title="Inline code">`code`</button>
+        <button class="toolbar-btn" data-action="codeblock"  title="Code block">```</button>
+        <span class="toolbar-sep"></span>
+        <button class="toolbar-btn" data-action="ul"         title="Bullet list">• List</button>
+        <button class="toolbar-btn" data-action="ol"         title="Numbered list">1. List</button>
+        <button class="toolbar-btn" data-action="blockquote" title="Blockquote">"Quote"</button>
+        <button class="toolbar-btn" data-action="hr"         title="Divider">—</button>
+      </div>
+
+      <textarea
+        id="markdown-input"
+        spellcheck="true"
+        placeholder="# Start writing here...
+
+Write your post in Markdown. Use the toolbar above or keyboard shortcuts.
+
+## Headings
+Use ## for H2 sections (they'll appear in the Table of Contents)
+
+## Formatting
+**bold**, *italic*, `inline code`
+
+## Images
+![Alt text](../images/your-image.jpg)
+
+## Links
+[link text](https://example.com)
+
+When you're done, click 'Generate HTML →' to get the post HTML."
+      ></textarea>
+    </div>
+
+    <div class="pane-divider"></div>
+
+    <!-- Preview Pane -->
+    <div class="preview-pane" id="preview-pane">
+      <div class="pane-header">
+        <span>Preview</span>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);">Live render</span>
+      </div>
+      <div class="preview-content">
+        <h1 class="preview-title" id="preview-title">Post Title</h1>
+        <div class="preview-meta" id="preview-meta">
+          <span id="preview-date">—</span>
+          <span id="preview-readtime">—</span>
+          <span id="preview-tags">—</span>
+        </div>
+        <div class="prose" id="preview-body">
+          <p style="color: var(--text-faint); font-family: var(--font-mono); font-size: 13px;">
+            Start writing in the editor to see a live preview here.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.admin-body / #editor-view -->
+
+  <!-- ══════════════════════════════════════════════════
+       ANALYTICS VIEW
+  ══════════════════════════════════════════════════════ -->
+  <div id="analytics-view">
+
+    <div class="analytics-header">
+      <div>
+        <h2 class="analytics-title">Analytics</h2>
+        <p class="analytics-subtitle">Local visit data tracked in your browser · resets if cache cleared</p>
+      </div>
+      <button class="clear-btn" id="btn-clear-analytics">Clear data</button>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="stat-cards">
+      <div class="stat-card">
+        <p class="stat-label">Total Page Views</p>
+        <p class="stat-value" id="stat-total-views">0</p>
+        <p class="stat-sub">all time</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Posts Tracked</p>
+        <p class="stat-value" id="stat-total-posts">0</p>
+        <p class="stat-sub">unique pages</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">This Week</p>
+        <p class="stat-value" id="stat-week-views">0</p>
+        <p class="stat-sub">last 7 days</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Today</p>
+        <p class="stat-value" id="stat-today-views">0</p>
+        <p class="stat-sub" id="stat-today-date">—</p>
+      </div>
+    </div>
+
+    <!-- Charts + top pages -->
+    <div class="analytics-grid">
+
+      <!-- Sparkline chart -->
+      <div class="analytics-card">
+        <div class="analytics-card-header">
+          <span>Views — Last 14 Days</span>
+        </div>
+        <div class="sparkline-wrap">
+          <div class="sparkline-labels" id="sparkline-labels"></div>
+          <div class="sparkline">
+            <svg id="sparkline-svg" viewBox="0 0 400 64" preserveAspectRatio="none"></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top posts -->
+      <div class="analytics-card">
+        <div class="analytics-card-header">
+          <span>Top Pages</span>
+          <span id="top-pages-total" style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);"></span>
+        </div>
+        <div class="analytics-card-body" id="top-pages-list">
+          <p style="padding:20px;font-family:var(--font-mono);font-size:12px;color:var(--text-faint);text-align:center;">No data yet — visit your blog pages to start tracking.</p>
+        </div>
+      </div>
+
+    </div><!-- /.analytics-grid -->
+
+    <!-- Recent activity -->
+    <div class="analytics-card" style="margin-bottom: 32px;">
+      <div class="analytics-card-header">
+        <span>Recent Activity</span>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);">latest 20 visits</span>
+      </div>
+      <div class="analytics-card-body" id="activity-feed">
+        <p style="padding:20px;font-family:var(--font-mono);font-size:12px;color:var(--text-faint);text-align:center;">No activity recorded yet.</p>
+      </div>
+    </div>
+
+    <!-- Umami section -->
+    <div class="umami-section">
+      <div class="umami-header">
+        <span class="umami-title">Real-time Analytics via Umami</span>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);">optional · free · privacy-friendly</span>
+      </div>
+
+      <!-- Setup instructions (shown until URL is saved) -->
+      <div class="umami-setup" id="umami-setup">
+        <p>
+          <strong style="color:var(--text);">Umami</strong> gives you real-time visitors, referrers, devices, and
+          country data — like Substack's stats but for your own blog. Free to use, no ads, no personal data sold.
+        </p>
+        <div class="umami-steps">
+          <div class="umami-step"><span class="umami-step-num">1.</span><span>Sign up free at <strong style="color:var(--text);">umami.is</strong> → create a website → copy your <code>data-website-id</code></span></div>
+          <div class="umami-step"><span class="umami-step-num">2.</span><span>Add the Umami script tag to every HTML page's <code>&lt;head&gt;</code>:<br><code style="display:block;margin-top:6px;word-break:break-all;">&lt;script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-ID"&gt;&lt;/script&gt;</code></span></div>
+          <div class="umami-step"><span class="umami-step-num">3.</span><span>Paste your Umami dashboard share URL below to embed it here in the admin panel</span></div>
+        </div>
+        <div class="umami-input-row">
+          <input type="url" id="umami-url-input" class="umami-url-input" placeholder="https://cloud.umami.is/share/... (your share URL)">
+          <button class="admin-btn admin-btn-primary" id="btn-save-umami">Save</button>
+        </div>
+      </div>
+
+      <!-- Embedded Umami dashboard (shown after URL saved) -->
+      <div id="umami-iframe-wrap">
+        <div style="padding:10px 20px 0; display:flex; justify-content:flex-end;">
+          <button class="clear-btn" id="btn-change-umami">Change URL</button>
+        </div>
+        <iframe id="umami-iframe" src="" title="Umami Analytics Dashboard" allowfullscreen></iframe>
+      </div>
+    </div>
+
+  </div><!-- /#analytics-view -->
+
+</div><!-- /#admin-app -->
+
+<!-- Publish confirmation toast -->
+<div id="publish-confirm">
+  <span class="publish-confirm-icon">✓</span>
+  <div class="publish-confirm-text">
+    <strong>3 files downloaded!</strong>
+    <div class="publish-confirm-sub">
+      Move <code id="publish-slug" style="font-family:var(--font-mono);font-size:11px;background:var(--bg);padding:1px 5px;border-radius:3px;"></code>.html → posts/ &nbsp;·&nbsp; Replace posts.json &nbsp;·&nbsp; Replace sitemap.xml
+    </div>
+  </div>
+</div>
+
+<!-- marked.js — Markdown parser (loaded from CDN, no install needed) -->
+<script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── Password hash (SHA-256) ──────────────────────────────
+  // Default password: Blog@2026!
+  // To change: run in console:
+  //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('NEW_PASSWORD'))
+  //     .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
+  const ADMIN_USER = 'admin';
+  const ADMIN_HASH = 'f3652ebd0ee50b88e448208673d2d69a6dbccd3a70e9845fe09c124c0c012f90';
+  // ↑ This hash = "Blog@2026!" — change after first login
+
+  // ── Hash a string with SHA-256 ───────────────────────────
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('');
+  }
+
+  // ── Session (tab only, clears on close) ─────────────────
+  const SESSION_KEY = 'blog_admin_session';
+
+  function isLoggedIn() {
+    return sessionStorage.getItem(SESSION_KEY) === '1';
+  }
+
+  function showApp() {
+    document.getElementById('login-screen').style.display = 'none';
+    const app = document.getElementById('admin-app');
+    app.classList.add('visible');
+    // Set today's date as default
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('meta-date').value = today;
+  }
+
+  // ── Auto-login if session exists ─────────────────────────
+  if (isLoggedIn()) showApp();
+
+  // ── Login form ────────────────────────────────────────────
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const user = document.getElementById('login-user').value.trim();
+    const pass = document.getElementById('login-pass').value;
+    const errorEl = document.getElementById('login-error');
+
+    if (user !== ADMIN_USER) {
+      errorEl.classList.add('visible');
+      return;
+    }
+
+    const hash = await sha256(pass);
+    if (hash === ADMIN_HASH) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      errorEl.classList.remove('visible');
+      showApp();
+    } else {
+      errorEl.classList.add('visible');
+      document.getElementById('login-pass').value = '';
+    }
+  });
+
+  // ── Logout ────────────────────────────────────────────────
+  document.getElementById('btn-logout').addEventListener('click', () => {
+    sessionStorage.removeItem(SESSION_KEY);
+    location.reload();
+  });
+
+  // ── Configure marked.js ───────────────────────────────────
+  marked.setOptions({
+    gfm: true,
+    breaks: true,
+    headerIds: true,
+  });
+
+  // ── Live preview ─────────────────────────────────────────
+  const mdInput    = document.getElementById('markdown-input');
+  const previewBody = document.getElementById('preview-body');
+  const wordCountEl = document.getElementById('word-count');
+
+  function updatePreview() {
+    const md = mdInput.value;
+    previewBody.innerHTML = md ? marked.parse(md) : '<p style="color:var(--text-faint);font-family:var(--font-mono);font-size:13px;">Start writing...</p>';
+
+    // Word count
+    const words = md.trim().split(/\s+/).filter(Boolean).length;
+    wordCountEl.textContent = words.toLocaleString() + ' word' + (words !== 1 ? 's' : '');
+
+    // Update preview meta
+    const title = document.getElementById('meta-title').value || 'Post Title';
+    const date  = document.getElementById('meta-date').value;
+    const rt    = document.getElementById('meta-readtime').value;
+    const tags  = document.getElementById('meta-tags').value;
+
+    document.getElementById('preview-title').textContent = title;
+    document.getElementById('preview-date').textContent = date || '—';
+    document.getElementById('preview-readtime').textContent = rt || '—';
+    document.getElementById('preview-tags').textContent = tags || '—';
+  }
+
+  mdInput.addEventListener('input', updatePreview);
+  document.getElementById('meta-title').addEventListener('input', updatePreview);
+  document.getElementById('meta-date').addEventListener('input', updatePreview);
+  document.getElementById('meta-readtime').addEventListener('input', updatePreview);
+  document.getElementById('meta-tags').addEventListener('input', updatePreview);
+
+  // ── Toolbar actions ───────────────────────────────────────
+  document.querySelectorAll('.toolbar-btn[data-action]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const action = btn.dataset.action;
+      const textarea = mdInput;
+      const start = textarea.selectionStart;
+      const end   = textarea.selectionEnd;
+      const sel   = textarea.value.substring(start, end);
+      let before = textarea.value.substring(0, start);
+      let after  = textarea.value.substring(end);
+      let insertion = '';
+      let cursorOffset = 0;
+
+      switch (action) {
+        case 'bold':
+          insertion = `**${sel || 'bold text'}**`;
+          cursorOffset = sel ? insertion.length : 2;
+          break;
+        case 'italic':
+          insertion = `*${sel || 'italic text'}*`;
+          cursorOffset = sel ? insertion.length : 1;
+          break;
+        case 'h2':
+          insertion = `\n## ${sel || 'Heading'}`;
+          cursorOffset = insertion.length;
+          break;
+        case 'h3':
+          insertion = `\n### ${sel || 'Heading'}`;
+          cursorOffset = insertion.length;
+          break;
+        case 'link':
+          insertion = `[${sel || 'link text'}](https://example.com)`;
+          cursorOffset = sel ? insertion.length - 22 : 1;
+          break;
+        case 'image':
+          insertion = `![${sel || 'alt text'}](../images/your-image.jpg)`;
+          cursorOffset = insertion.length;
+          break;
+        case 'code':
+          insertion = `\`${sel || 'code'}\``;
+          cursorOffset = sel ? insertion.length : 1;
+          break;
+        case 'codeblock':
+          insertion = `\n\`\`\`\n${sel || 'code here'}\n\`\`\`\n`;
+          cursorOffset = insertion.length;
+          break;
+        case 'ul':
+          insertion = `\n- ${sel || 'item one'}\n- item two\n- item three\n`;
+          cursorOffset = insertion.length;
+          break;
+        case 'ol':
+          insertion = `\n1. ${sel || 'item one'}\n2. item two\n3. item three\n`;
+          cursorOffset = insertion.length;
+          break;
+        case 'blockquote':
+          insertion = `\n> ${sel || 'Quote text here.'}\n`;
+          cursorOffset = insertion.length;
+          break;
+        case 'hr':
+          insertion = `\n\n---\n\n`;
+          cursorOffset = insertion.length;
+          break;
+      }
+
+      textarea.value = before + insertion + after;
+      const newPos = start + cursorOffset;
+      textarea.setSelectionRange(newPos, newPos);
+      textarea.focus();
+      updatePreview();
+    });
+  });
+
+  // ── Keyboard shortcuts ───────────────────────────────────
+  mdInput.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+      e.preventDefault();
+      document.querySelector('[data-action="bold"]').click();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
+      e.preventDefault();
+      document.querySelector('[data-action="italic"]').click();
+    }
+    // Tab key = insert 2 spaces
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const s = mdInput.selectionStart;
+      const e2 = mdInput.selectionEnd;
+      mdInput.value = mdInput.value.substring(0, s) + '  ' + mdInput.value.substring(e2);
+      mdInput.setSelectionRange(s + 2, s + 2);
+    }
+  });
+
+  // ── Preview toggle ───────────────────────────────────────
+  let previewVisible = true;
+  document.getElementById('btn-preview-toggle').addEventListener('click', () => {
+    previewVisible = !previewVisible;
+    const pp = document.getElementById('preview-pane');
+    const divider = document.querySelector('.pane-divider');
+    pp.style.display = previewVisible ? '' : 'none';
+    divider.style.display = previewVisible ? '' : 'none';
+    document.getElementById('btn-preview-toggle').textContent = previewVisible ? 'Split view' : 'Show preview';
+  });
+
+  // ── Helper: trigger a file download ─────────────────────
+  function downloadFile(filename, content, mime) {
+    const blob = new Blob([content], { type: mime || 'text/html' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // ── Publish Post: downloads post HTML + updated posts.json + sitemap ──
+  document.getElementById('btn-generate').addEventListener('click', () => {
+    const md    = mdInput.value.trim();
+    const title = document.getElementById('meta-title').value.trim() || 'Post Title';
+    const slug  = document.getElementById('meta-slug').value.trim()  || 'my-post';
+    const tags  = document.getElementById('meta-tags').value.trim()  || 'uncategorized';
+    const date  = document.getElementById('meta-date').value         || new Date().toISOString().split('T')[0];
+    const rt    = document.getElementById('meta-readtime').value.trim() || '5 min read';
+    const excerpt = md.replace(/^#.*\n/, '').replace(/[#*`_>\[\]]/g, '').trim().split('\n').find(l => l.trim()).slice(0, 180);
+    const featured = document.getElementById('meta-featured') ? document.getElementById('meta-featured').checked : false;
+
+    if (!md)    { alert('Write some content first!'); return; }
+    if (!slug.match(/^[a-z0-9-]+$/)) { alert('Slug must be lowercase letters, numbers, and hyphens only.'); return; }
+
+    const contentHtml = marked.parse(md);
+    const tagList     = tags.split(',').map(t => t.trim()).filter(Boolean);
+    const prettyDate  = new Date(date + 'T12:00:00Z').toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric', timeZone:'UTC' });
+    const tagHtml     = tagList.map(t => `<span class="tag">${t}</span>`).join('\n          ');
+    const tagsMeta    = tagList.map(t => `  <meta name="article:tag" content="${t}">`).join('\n');
+    const tagsKw      = JSON.stringify(tagList);
+
+    // ── 1. Post HTML file ──────────────────────────────────
+    const postHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${title} · Your Name</title>
+  <meta name="description" content="">
+  <meta name="author" content="Your Name">
+  <meta property="og:type"        content="article">
+  <meta property="og:url"         content="https://yourblog.com/posts/${slug}.html">
+  <meta property="og:title"       content="${title.replace(/"/g, '&quot;')}">
+  <meta property="og:description" content="">
+  <meta property="og:image"       content="https://yourblog.com/images/og-default.png">
+  <meta name="twitter:card"       content="summary_large_image">
+  <meta name="article:published_time" content="${date}T00:00:00Z">
+  <meta name="article:author"         content="Your Name">
+${tagsMeta}
+  <link rel="canonical" href="https://yourblog.com/posts/${slug}.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":${JSON.stringify(title)},"description":"","url":"https://yourblog.com/posts/${slug}.html","datePublished":"${date}","dateModified":"${date}","author":{"@type":"Person","name":"Your Name","url":"https://yourblog.com/about.html"},"keywords":${tagsKw}}
+  <\/script>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page-body">
+<div id="progress-bar" role="progressbar" aria-label="Reading progress"></div>
+<header class="nav" role="banner">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">your<span>.</span>blog</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="../index.html"  class="nav-link">Home</a>
+      <a href="../blog.html"   class="nav-link">Blog</a>
+      <a href="../notes.html"  class="nav-link">Notes</a>
+      <a href="../about.html"  class="nav-link">About</a>
+    </nav>
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="nav-mobile">
+  <a href="../index.html" class="nav-link">Home</a>
+  <a href="../blog.html"  class="nav-link">Blog</a>
+  <a href="../notes.html" class="nav-link">Notes</a>
+  <a href="../about.html" class="nav-link">About</a>
+</div>
+<div class="post-page">
+  <article>
+    <header class="post-header">
+      <div class="post-card-tags">${tagHtml}</div>
+      <h1 class="post-title">${title}</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${prettyDate}</span>
+        <span class="post-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${rt}</span>
+        <span class="post-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Your Name</span>
+      </div>
+    </header>
+    <div class="post-divider"></div>
+    <div class="prose">
+${contentHtml}
+    </div>
+    <nav class="post-nav"><a href="../blog.html" class="post-nav-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>Back to all posts</a></nav>
+  </article>
+  <aside class="toc-sidebar" aria-label="Table of contents">
+    <p class="toc-title">On this page</p>
+    <div id="toc"></div>
+  </aside>
+</div>
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <p class="footer-copy">© 2026 Your Name. All rights reserved.</p>
+  <nav class="footer-links"><a href="../sitemap.xml" class="footer-link">Sitemap</a><a href="../about.html" class="footer-link">About</a></nav>
+</div></div></footer>
+<script>(function(){var d={visits:[]};try{d=JSON.parse(localStorage.getItem('blog_analytics'))||d;}catch(e){}d.visits.push({page:location.pathname,title:document.title.split(' \xb7 ')[0],ts:Date.now()});if(d.visits.length>500)d.visits=d.visits.slice(-500);localStorage.setItem('blog_analytics',JSON.stringify(d));})();<\/script>
+<script src="../script.js"><\/script>
+</body></html>`;
+
+    // ── 2. Updated posts.json ──────────────────────────────
+    let existingPosts = [];
+    try {
+      const raw = localStorage.getItem('blog_posts_cache');
+      if (raw) existingPosts = JSON.parse(raw);
+    } catch(e) {}
+
+    // Remove existing entry with same slug (update case)
+    existingPosts = existingPosts.filter(p => p.slug !== slug);
+    const newEntry = { slug, title, excerpt, tags: tagList, date, readtime: rt, featured };
+    existingPosts.unshift(newEntry); // newest first
+    localStorage.setItem('blog_posts_cache', JSON.stringify(existingPosts));
+
+    const postsJson = JSON.stringify(existingPosts, null, 2);
+
+    // ── 3. Updated sitemap.xml ─────────────────────────────
+    const sitemapEntries = existingPosts.map(p => `
+  <url>
+    <loc>https://yourblog.com/posts/${p.slug}.html</loc>
+    <lastmod>${p.date}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>`).join('');
+
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://yourblog.com/</loc><lastmod>${date}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://yourblog.com/blog.html</loc><lastmod>${date}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://yourblog.com/notes.html</loc><lastmod>${date}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yourblog.com/about.html</loc><lastmod>${date}</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>${sitemapEntries}
+</urlset>`;
+
+    // ── Download all three files ───────────────────────────
+    downloadFile(`${slug}.html`,    postHtml,    'text/html');
+    setTimeout(() => downloadFile('posts.json',  postsJson,  'application/json'), 300);
+    setTimeout(() => downloadFile('sitemap.xml', sitemap,    'application/xml'),  600);
+
+    // ── Show publish confirmation ──────────────────────────
+    document.getElementById('publish-confirm').classList.add('visible');
+    document.getElementById('publish-slug').textContent = slug;
+    setTimeout(() => document.getElementById('publish-confirm').classList.remove('visible'), 6000);
+  });
+
+  // ══════════════════════════════════════════════════════════
+  // TAB SWITCHING
+  // ══════════════════════════════════════════════════════════
+  const editorView    = document.getElementById('editor-view');
+  const analyticsView = document.getElementById('analytics-view');
+  const editorMetaBar = document.getElementById('editor-meta-bar');
+  const btnGenerate   = document.getElementById('btn-generate');
+  const btnPreviewTog = document.getElementById('btn-preview-toggle');
+
+  document.querySelectorAll('.admin-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.dataset.tab;
+      if (target === 'editor') {
+        editorView.style.display    = 'flex';
+        analyticsView.classList.remove('visible');
+        editorMetaBar.style.display = '';
+        btnGenerate.style.display   = '';
+        btnPreviewTog.style.display = '';
+      } else {
+        editorView.style.display    = 'none';
+        analyticsView.classList.add('visible');
+        editorMetaBar.style.display = 'none';
+        btnGenerate.style.display   = 'none';
+        btnPreviewTog.style.display = 'none';
+        renderAnalytics();
+      }
+    });
+  });
+
+  // ══════════════════════════════════════════════════════════
+  // ANALYTICS — localStorage-based visit tracking
+  // Key: blog_analytics  →  { visits: [ {page, title, ts} ] }
+  // ══════════════════════════════════════════════════════════
+
+  const ANALYTICS_KEY = 'blog_analytics';
+
+  function getAnalyticsData() {
+    try {
+      return JSON.parse(localStorage.getItem(ANALYTICS_KEY)) || { visits: [] };
+    } catch { return { visits: [] }; }
+  }
+
+  function timeAgo(ts) {
+    const diff = Math.floor((Date.now() - ts) / 1000);
+    if (diff < 60)   return 'just now';
+    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+    return Math.floor(diff / 86400) + 'd ago';
+  }
+
+  function renderAnalytics() {
+    const data    = getAnalyticsData();
+    const visits  = data.visits;
+    const now     = Date.now();
+    const dayMs   = 86400000;
+    const todayStart = new Date().setHours(0,0,0,0);
+    const weekStart  = now - 7 * dayMs;
+
+    // ── Stat cards ──
+    const todayVisits = visits.filter(v => v.ts >= todayStart);
+    const weekVisits  = visits.filter(v => v.ts >= weekStart);
+    const pageSet     = new Set(visits.map(v => v.page));
+
+    document.getElementById('stat-total-views').textContent = visits.length.toLocaleString();
+    document.getElementById('stat-total-posts').textContent = pageSet.size;
+    document.getElementById('stat-week-views').textContent  = weekVisits.length.toLocaleString();
+    document.getElementById('stat-today-views').textContent = todayVisits.length.toLocaleString();
+    document.getElementById('stat-today-date').textContent  =
+      new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    // ── Sparkline — last 14 days ──
+    const days = 14;
+    const buckets = Array.from({ length: days }, (_, i) => {
+      const d = new Date(now - (days - 1 - i) * dayMs);
+      const start = new Date(d).setHours(0,0,0,0);
+      const end   = start + dayMs;
+      return {
+        label: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        count: visits.filter(v => v.ts >= start && v.ts < end).length
+      };
+    });
+
+    const maxCount = Math.max(...buckets.map(b => b.count), 1);
+    const W = 400, H = 64, pad = 4;
+    const stepX = W / (days - 1);
+
+    // Labels (first + last)
+    const labelsEl = document.getElementById('sparkline-labels');
+    labelsEl.innerHTML = `<span>${buckets[0].label}</span><span>${buckets[days-1].label}</span>`;
+
+    // SVG path
+    const points = buckets.map((b, i) => {
+      const x = i * stepX;
+      const y = pad + (H - 2*pad) * (1 - b.count / maxCount);
+      return `${x},${y}`;
+    });
+    const linePath  = `M ${points.join(' L ')}`;
+    const areaPath  = `M 0,${H} L ${points.join(' L ')} L ${(days-1)*stepX},${H} Z`;
+
+    document.getElementById('sparkline-svg').innerHTML = `
+      <defs>
+        <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#e81828" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#e81828" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path d="${areaPath}" fill="url(#sg)"/>
+      <path d="${linePath}" fill="none" stroke="#e81828" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    `;
+
+    // ── Top pages ──
+    const pageCounts = {};
+    const pageTitles = {};
+    visits.forEach(v => {
+      pageCounts[v.page] = (pageCounts[v.page] || 0) + 1;
+      if (v.title) pageTitles[v.page] = v.title;
+    });
+    const sorted = Object.entries(pageCounts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+    const maxViews = sorted[0]?.[1] || 1;
+
+    document.getElementById('top-pages-total').textContent = pageSet.size + ' pages';
+
+    const topList = document.getElementById('top-pages-list');
+    if (sorted.length === 0) {
+      topList.innerHTML = '<p style="padding:20px;font-family:var(--font-mono);font-size:12px;color:var(--text-faint);text-align:center;">No data yet — visit your blog pages to start tracking.</p>';
+    } else {
+      topList.innerHTML = sorted.map(([page, count], i) => {
+        const title = pageTitles[page] || page.split('/').pop().replace('.html','') || page;
+        const pct   = Math.round((count / maxViews) * 100);
+        return `<div class="top-page-row">
+          <span class="top-page-rank">${i+1}</span>
+          <span class="top-page-name" title="${page}">${title}</span>
+          <div class="top-page-bar-wrap"><div class="top-page-bar" style="width:${pct}%"></div></div>
+          <span class="top-page-views">${count}</span>
+        </div>`;
+      }).join('');
+    }
+
+    // ── Activity feed ──
+    const feed = document.getElementById('activity-feed');
+    const recent = [...visits].reverse().slice(0, 20);
+    if (recent.length === 0) {
+      feed.innerHTML = '<p style="padding:20px;font-family:var(--font-mono);font-size:12px;color:var(--text-faint);text-align:center;">No activity recorded yet.</p>';
+    } else {
+      feed.innerHTML = recent.map(v => {
+        const title = v.title || v.page.split('/').pop().replace('.html','') || v.page;
+        const isNew = (now - v.ts) < 3600000;
+        return `<div class="activity-row">
+          <div class="activity-dot${isNew ? ' dot-new' : ''}"></div>
+          <div class="activity-text">Viewed <strong>${title}</strong></div>
+          <div class="activity-time">${timeAgo(v.ts)}</div>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // ── Clear analytics ──
+  document.getElementById('btn-clear-analytics').addEventListener('click', () => {
+    if (confirm('Clear all local analytics data? This cannot be undone.')) {
+      localStorage.removeItem(ANALYTICS_KEY);
+      renderAnalytics();
+    }
+  });
+
+  // ══════════════════════════════════════════════════════════
+  // UMAMI EMBED
+  // ══════════════════════════════════════════════════════════
+  const UMAMI_KEY = 'blog_umami_url';
+
+  function loadUmamiEmbed() {
+    const saved = localStorage.getItem(UMAMI_KEY);
+    if (saved) {
+      document.getElementById('umami-setup').style.display      = 'none';
+      document.getElementById('umami-iframe-wrap').style.display = 'block';
+      document.getElementById('umami-iframe').src               = saved;
+    }
+  }
+  loadUmamiEmbed();
+
+  document.getElementById('btn-save-umami').addEventListener('click', () => {
+    const url = document.getElementById('umami-url-input').value.trim();
+    if (!url.startsWith('http')) { alert('Please enter a valid URL.'); return; }
+    localStorage.setItem(UMAMI_KEY, url);
+    loadUmamiEmbed();
+  });
+
+  document.getElementById('btn-change-umami').addEventListener('click', () => {
+    localStorage.removeItem(UMAMI_KEY);
+    document.getElementById('umami-setup').style.display       = '';
+    document.getElementById('umami-iframe-wrap').style.display = 'none';
+    document.getElementById('umami-url-input').value           = '';
+  });
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes & Photos · Your Name</title>
+  <meta name="description" content="A visual journal — photos, short notes, and things I want to remember.">
+  <meta name="author" content="Your Name">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://yourblog.com/notes.html">
+  <meta property="og:title"       content="Notes & Photos · Your Name">
+  <meta property="og:description" content="A visual journal — photos, short notes, and things I want to remember.">
+  <meta property="og:image"       content="https://yourblog.com/images/og-default.png">
+  <meta name="twitter:card"       content="summary_large_image">
+  <link rel="canonical" href="https://yourblog.com/notes.html">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ── Lightbox (pure CSS, no JS) ── */
+    .lightbox-link { display: block; cursor: zoom-in; }
+    .note-card img { transition: opacity 0.2s; }
+    .note-card:hover img { opacity: 0.85; }
+  </style>
+</head>
+<body class="page-body">
+
+<!-- ── NAV ──────────────────────────────────────────────── -->
+<header class="nav" role="banner">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">your<span>.</span>blog</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html"  class="nav-link">Home</a>
+      <a href="blog.html"   class="nav-link">Blog</a>
+      <a href="notes.html"  class="nav-link">Notes</a>
+      <a href="about.html"  class="nav-link">About</a>
+    </nav>
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="nav-mobile">
+  <a href="index.html"  class="nav-link">Home</a>
+  <a href="blog.html"   class="nav-link">Blog</a>
+  <a href="notes.html"  class="nav-link">Notes</a>
+  <a href="about.html"  class="nav-link">About</a>
+</div>
+
+<main>
+  <div class="page-hero">
+    <div class="container">
+      <h1 class="page-title">Notes &amp; Photos</h1>
+      <p class="page-subtitle">Short observations, pictures, and things worth keeping.</p>
+    </div>
+  </div>
+
+  <div class="container" style="padding-bottom: 96px;">
+
+    <!--
+      HOW TO ADD A NOTE OR PHOTO
+      ═══════════════════════════
+      Copy one of the <div class="note-card"> blocks and update:
+        - The <a href="#lb-N"> link — increment N for each new item
+        - The <img src="images/..."> with your actual image path
+        - The <div id="lb-N"> lightbox id — must match the link href
+        - Caption and date text
+        - Paste the new card at the TOP (newest first)
+
+      For text-only notes, omit the <a> and <img>, just use .note-card-body.
+    -->
+
+    <div class="notes-grid">
+
+      <!-- NOTE CARD 1 — Image with lightbox -->
+      <div class="note-card">
+        <a href="#lb-1" class="lightbox-link" aria-label="View full size">
+          <!-- Replace with your actual image -->
+          <img
+            src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&q=80"
+            alt="A laptop on a wooden desk with morning coffee"
+            loading="lazy"
+            width="600"
+            height="400"
+          >
+        </a>
+        <div class="note-card-body">
+          <p class="note-card-caption">Morning desk setup. Coffee before code, always.</p>
+          <p class="note-card-date">Jul 29, 2026</p>
+        </div>
+      </div>
+
+      <!-- NOTE CARD 2 — Text only -->
+      <div class="note-card">
+        <div class="note-card-body" style="padding: 20px;">
+          <p class="note-card-caption" style="font-size: 15px; line-height: 1.65; color: var(--text);">
+            "The best time to start was yesterday. The second best time is now."
+            I keep coming back to this. Not as motivation, but as a reminder that
+            starting imperfectly is still starting.
+          </p>
+          <p class="note-card-date" style="margin-top: 12px;">Jul 25, 2026</p>
+        </div>
+      </div>
+
+      <!-- NOTE CARD 3 — Image with lightbox -->
+      <div class="note-card">
+        <a href="#lb-3" class="lightbox-link" aria-label="View full size">
+          <img
+            src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=80"
+            alt="Stack of books on a shelf"
+            loading="lazy"
+            width="600"
+            height="450"
+          >
+        </a>
+        <div class="note-card-body">
+          <p class="note-card-caption">Current reading stack. Never enough hours.</p>
+          <p class="note-card-date">Jul 18, 2026</p>
+        </div>
+      </div>
+
+      <!-- NOTE CARD 4 — Image with lightbox -->
+      <div class="note-card">
+        <a href="#lb-4" class="lightbox-link" aria-label="View full size">
+          <img
+            src="https://images.unsplash.com/photo-1444927714506-8492d94b4e3d?w=600&q=80"
+            alt="Aerial view of city at dusk"
+            loading="lazy"
+            width="600"
+            height="400"
+          >
+        </a>
+        <div class="note-card-body">
+          <p class="note-card-caption">Cities look best from above at dusk.</p>
+          <p class="note-card-date">Jul 10, 2026</p>
+        </div>
+      </div>
+
+      <!-- NOTE CARD 5 — Text only -->
+      <div class="note-card">
+        <div class="note-card-body" style="padding: 20px;">
+          <p class="note-card-caption" style="font-size: 14px; line-height: 1.7; color: var(--text-muted);">
+            Interesting pattern: every tool I've stuck with long-term has a terrible
+            first impression. Vim. Git. Figma. The friction is a feature — it filters
+            out casual users and creates deep investment for the ones who push through.
+          </p>
+          <p class="note-card-date" style="margin-top: 12px;">Jul 5, 2026</p>
+        </div>
+      </div>
+
+      <!-- NOTE CARD 6 — Image with lightbox -->
+      <div class="note-card">
+        <a href="#lb-6" class="lightbox-link" aria-label="View full size">
+          <img
+            src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600&q=80"
+            alt="Pen and notebook on white table"
+            loading="lazy"
+            width="600"
+            height="400"
+          >
+        </a>
+        <div class="note-card-body">
+          <p class="note-card-caption">Still the best input device for first drafts.</p>
+          <p class="note-card-date">Jun 28, 2026</p>
+        </div>
+      </div>
+
+    </div><!-- /.notes-grid -->
+
+    <!-- Lightbox overlays (pure CSS :target) -->
+    <div class="lightbox" id="lb-1" role="dialog" aria-label="Full size image">
+      <a href="#" aria-label="Close">
+        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&q=85" alt="A laptop on a wooden desk with morning coffee">
+      </a>
+    </div>
+    <div class="lightbox" id="lb-3" role="dialog" aria-label="Full size image">
+      <a href="#" aria-label="Close">
+        <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=85" alt="Stack of books on a shelf">
+      </a>
+    </div>
+    <div class="lightbox" id="lb-4" role="dialog" aria-label="Full size image">
+      <a href="#" aria-label="Close">
+        <img src="https://images.unsplash.com/photo-1444927714506-8492d94b4e3d?w=1200&q=85" alt="Aerial view of city at dusk">
+      </a>
+    </div>
+    <div class="lightbox" id="lb-6" role="dialog" aria-label="Full size image">
+      <a href="#" aria-label="Close">
+        <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&q=85" alt="Pen and notebook on white table">
+      </a>
+    </div>
+
+  </div><!-- /.container -->
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <p class="footer-copy">© 2026 Your Name. All rights reserved.</p>
+      <nav class="footer-links">
+        <a href="sitemap.xml" class="footer-link">Sitemap</a>
+        <a href="about.html"  class="footer-link">About</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var d={visits:[]};
+  try{d=JSON.parse(localStorage.getItem('blog_analytics'))||d;}catch(e){}
+  d.visits.push({page:location.pathname,title:document.title.split(' · ')[0],ts:Date.now()});
+  if(d.visits.length>500)d.visits=d.visits.slice(-500);
+  localStorage.setItem('blog_analytics',JSON.stringify(d));
+})();
+</script>
+<script src="script.js"></script>
+</body>
+</html>
