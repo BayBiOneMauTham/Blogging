@@ -1,58 +1,211 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  SITEMAP — HOW TO UPDATE
-  ════════════════════════
-  When you add a new post:
-    1. Add a new <url> block below (copy an existing one)
-    2. Update <loc> with the full URL to the new post
-    3. Update <lastmod> with today's date (YYYY-MM-DD format)
-    4. <changefreq> for posts: "monthly" or "yearly"
-    5. <priority>: 0.8 for posts, 1.0 for homepage, 0.5 for other pages
-
-  Submit to Google Search Console after updating:
-    https://search.google.com/search-console
--->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <!-- Homepage -->
+  <url><loc>https://baybionemautham.github.io/Blogging/</loc><lastmod>2026-07-31</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://baybionemautham.github.io/Blogging/blog.html</loc><lastmod>2026-07-31</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://baybionemautham.github.io/Blogging/notes.html</loc><lastmod>2026-07-31</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://baybionemautham.github.io/Blogging/about.html</loc><lastmod>2026-07-31</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url>
-    <loc>https://yourblog.com/</loc>
-    <lastmod>2026-07-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <!-- Blog listing -->
-  <url>
-    <loc>https://yourblog.com/blog.html</loc>
-    <lastmod>2026-07-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Notes page -->
-  <url>
-    <loc>https://yourblog.com/notes.html</loc>
-    <lastmod>2026-07-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- About page -->
-  <url>
-    <loc>https://yourblog.com/about.html</loc>
-    <lastmod>2026-07-29</lastmod>
+    <loc>https://baybionemautham.github.io/Blogging/posts/121352206how-to-use-the-substack-editor.html</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.8</priority>
   </url>
-
-  <!-- ── POSTS — add new ones here (newest first) ── -->
-
   <url>
-    <loc>https://yourblog.com/posts/hello-world.html</loc>
+    <loc>https://baybionemautham.github.io/Blogging/posts/the-letter-from-me-to-you.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/122158112innovator-and-where-to-find-them.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/the-context-free-chair.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/culture-fit-is-that-a-real-thing.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/what-are-those.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/start-with-a-why.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/why-born-rich-or-smart-is-such-a-pain.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/the-story-of-the-indochines-elites.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/heaven-and-earth-we-need-both.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/start-this-note-with-a-question.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/we-are-political-animal-sometime-just-animal.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/call-me-chris.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/back-to-the-reading-track.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/work-isnt-just-work.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/a-bit-about-being-decisive.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/couple-of-years-ago.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/where-do-i-even-start.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/how-yall-doing.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/actually-its-115-but-whos-counting.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/173494539a19.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/17654850516f.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/176548541the-invisible-barrier-for-income.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/176548923c60.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/180237310so-you-want-to-be-an-ai-product-manager.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/180874563build-for-the-next-decades.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/185373559a-venture-capitalist.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/186055635da5.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/191732222on-education.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/191732384education.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/196619128irrationalities.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/hello-world.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/what-are-the-tech-talks.html</loc>
+    <lastmod>2024-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://baybionemautham.github.io/Blogging/posts/disclaimer.html</loc>
+    <lastmod>2024-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

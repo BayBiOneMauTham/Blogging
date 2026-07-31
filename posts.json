@@ -1,11 +1,377 @@
 [
   {
+    "slug": "121352206how-to-use-the-substack-editor",
+    "title": "121352206.how-to-use-the-substack-editor",
+    "excerpt": "Hi! This is a draft post. Did you know that there are a bunch of nice formatting options in this editor? For example: Block quotes are a nice way to put a quote or excerpt from a…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "2 min read",
+    "featured": false
+  },
+  {
+    "slug": "the-letter-from-me-to-you",
+    "title": "The letter from me to you",
+    "excerpt": "Subscribe now Hey it’s Chris speaking I always start my introduction like this, since it’s me coming up to you, being sincere and all that. This would be a letter to all who want…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "3 min read",
+    "featured": false
+  },
+  {
+    "slug": "122158112innovator-and-where-to-find-them",
+    "title": "122158112.innovator-and-where-to-find-them",
+    "excerpt": "I’ve been digging for a while Hi, it’s Chris speaking, I have the crazy tendency of over doing thing, overkilling is better than under IMO, lately it was handling onboarding on…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "3 min read",
+    "featured": false
+  },
+  {
+    "slug": "the-context-free-chair",
+    "title": "The context-free chair",
+    "excerpt": "The context-free chair Let’s start with a chair, The Mono Block Plastic Chair is an unassuming household object that has become ubiquitous. They can be found in homes, schools,…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "4 min read",
+    "featured": false
+  },
+  {
+    "slug": "culture-fit-is-that-a-real-thing",
+    "title": "Culture-fit? Is that a real thing?",
+    "excerpt": "Culture-fit? Is that a real thing? Lately, I was building a new team, from ground up. Naturally, struggling with something people say a lot, but less than a handful can define it,…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "5 min read",
+    "featured": false
+  },
+  {
+    "slug": "what-are-those",
+    "title": "What are those?",
+    "excerpt": "What are those? But let’s start with some definitions - Governance, Risk, and Compliance, or GRC for short, is a vital aspect for any organization. In today's fast-paced business…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "4 min read",
+    "featured": false
+  },
+  {
+    "slug": "start-with-a-why",
+    "title": "Start with a “why?”",
+    "excerpt": "Start with a “why?” Many of the people I know are not doing this, they don’t reinvest and just keep grinding for personal gain. But the minority and most successful people have it…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "4 min read",
+    "featured": false
+  },
+  {
+    "slug": "why-born-rich-or-smart-is-such-a-pain",
+    "title": "Why born rich or smart is such a pain?",
+    "excerpt": "Why born rich or smart is such a pain? Look at Instagram for fun or LinkedIn for business, being rich or smart early in life usually put a people on a pedestal of success faster,…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "5 min read",
+    "featured": false
+  },
+  {
+    "slug": "the-story-of-the-indochines-elites",
+    "title": "The story of the Indochine’s elites",
+    "excerpt": "Lately I found a video, an incredible one This was about a Vietnamese family, through all the turmoil of wars, space and time, they still thrive. Without social media today the…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "3 min read",
+    "featured": false
+  },
+  {
+    "slug": "heaven-and-earth-we-need-both",
+    "title": "Heaven and Earth, we need both",
+    "excerpt": "Heaven and Earth, we need both The Space Barons: Elon Musk, Jeff Bezos, and the Quest to Colonize the Cosmos &nbsp;is a 2018 book by Christian Davenport. It covers the rise of the…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "5 min read",
+    "featured": false
+  },
+  {
+    "slug": "start-this-note-with-a-question",
+    "title": "Start this note with a question",
+    "excerpt": "Start this note with a question It’s year-end time on lunar calendar and I begin the process of self-reflection, for the last couple hours, a new question emerge, how much exactly…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "6 min read",
+    "featured": false
+  },
+  {
+    "slug": "we-are-political-animal-sometime-just-animal",
+    "title": "We are political animal (Sometime just animal)",
+    "excerpt": "We are political animal (Sometime just animal) That not me saying, but the great Aristotle Hence it is evident that the state is a creation of nature, and that man is by nature a…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "5 min read",
+    "featured": false
+  },
+  {
+    "slug": "call-me-chris",
+    "title": "Call me Chris",
+    "excerpt": "Call me Chris Okay so first thing first, there are several things that I would need to introduce before diving into the content. After all, strangers danger, and don’t believe…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "7 min read",
+    "featured": false
+  },
+  {
+    "slug": "back-to-the-reading-track",
+    "title": "Back to the reading track",
+    "excerpt": "Too much for PM-ing, getting back on the normally random stuff I guess Back to the reading track I have always loved to read and read everything I can in between working hours…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "5 min read",
+    "featured": false
+  },
+  {
+    "slug": "work-isnt-just-work",
+    "title": "Work isn’t just work",
+    "excerpt": "Work isn’t just work It is no secret that I’m a 5-12 person. Every time my eyes are not closed, I work or do something relevant to personal growth. I always think of work as a…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "7 min read",
+    "featured": false
+  },
+  {
+    "slug": "a-bit-about-being-decisive",
+    "title": "A bit about being decisive",
+    "excerpt": "Make fast decision doesn’t equal being right. A bit about being decisive Decisive is having or showing the ability to make decisions quickly and effectively, most of the time we…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "5 min read",
+    "featured": false
+  },
+  {
+    "slug": "couple-of-years-ago",
+    "title": "Couple of years ago",
+    "excerpt": "Couple of years ago I don’t remember how far backward, I read “The last question“ by Issac Asimov, one of several stories that I read in one sitting, not because it was short, yes…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "9 min read",
+    "featured": false
+  },
+  {
+    "slug": "where-do-i-even-start",
+    "title": "Where do I even start?",
+    "excerpt": "Where do I even start? Just look at this equation, this and the question above actually come from a same concept of problem called Fermi problem, also know as an…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "6 min read",
+    "featured": false
+  },
+  {
+    "slug": "how-yall-doing",
+    "title": "How y’all doing?",
+    "excerpt": "How y’all doing? Long time no writing – it almost feels like I’ve been in limbo these past couple of months. The truth is, sometimes you just need to lay low and focus on…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "5 min read",
+    "featured": false
+  },
+  {
+    "slug": "actually-its-115-but-whos-counting",
+    "title": "Actually, it’s 11,5, but who's counting",
+    "excerpt": "Actually, it’s 11,5, but who's counting Last year was… a lot. Too many things shifted at once—politics, conflicts, technology, even the climate. The U.S. welcomed a new President,…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "8 min read",
+    "featured": false
+  },
+  {
+    "slug": "173494539a19",
+    "title": "173494539.a19",
+    "excerpt": "",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "1 min read",
+    "featured": false
+  },
+  {
+    "slug": "17654850516f",
+    "title": "176548505.16f",
+    "excerpt": "",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "1 min read",
+    "featured": false
+  },
+  {
+    "slug": "176548541the-invisible-barrier-for-income",
+    "title": "176548541.the-invisible-barrier-for-income",
+    "excerpt": "Why Knowledge Access Still Shapes Global Incomes Last week, I searched for a book on behavioral economics—something you’d expect to find easily. In the U.S., it appeared on Amazon…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "4 min read",
+    "featured": false
+  },
+  {
+    "slug": "176548923c60",
+    "title": "176548923.c60",
+    "excerpt": "",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "1 min read",
+    "featured": false
+  },
+  {
+    "slug": "180237310so-you-want-to-be-an-ai-product-manager",
+    "title": "180237310.so-you-want-to-be-an-ai-product-manager",
+    "excerpt": "If you spend any time on LinkedIn, you’d think being an AI Product Manager is pure victory. It’s all about agent demos that book perfect vacations, thought leadership threads on…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "7 min read",
+    "featured": false
+  },
+  {
+    "slug": "180874563build-for-the-next-decades",
+    "title": "180874563.build-for-the-next-decades",
+    "excerpt": "I have always been a “Move Fast and Break Things” fundamentalist until this week My entire career has been built on the religion of the startup: Ship the MVP. Iterate. Fail fast.…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "6 min read",
+    "featured": false
+  },
+  {
+    "slug": "185373559a-venture-capitalist",
+    "title": "185373559.a-venture-capitalist",
+    "excerpt": "The Investment Paradox First, let’s define the beast. What is a Venture Capitalist? In a standard Western MBA textbook, a VC is an investor who provides capital to early-stage,…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "4 min read",
+    "featured": false
+  },
+  {
+    "slug": "186055635da5",
+    "title": "186055635.da5",
+    "excerpt": "",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "1 min read",
+    "featured": false
+  },
+  {
+    "slug": "191732222on-education",
+    "title": "191732222.on-education",
+    "excerpt": "What comes to mind when I ask you to picture the “perfect” education? For most, it’s a very specific aesthetic: Straight A’s. Private school. An Ivy League acceptance letter.…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "6 min read",
+    "featured": false
+  },
+  {
+    "slug": "191732384education",
+    "title": "191732384.education",
+    "excerpt": "What comes to mind when I ask you to picture the “perfect” education? For most, it’s a very specific aesthetic: Straight A’s. Private school. An Ivy League acceptance letter.…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "6 min read",
+    "featured": false
+  },
+  {
+    "slug": "196619128irrationalities",
+    "title": "196619128.irrationalities",
+    "excerpt": "There is something deeply weird happening to the market right now. You smell it, I smell it, anyone paying attention to the broader economy smells it. We just can’t quite put our…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2026-07-31",
+    "readtime": "6 min read",
+    "featured": false
+  },
+  {
     "slug": "hello-world",
     "title": "Hello, World — Why I Started This Blog",
     "excerpt": "Every blog starts with a first post. Here's mine: what this space is about, what I plan to write, and why I decided to build my own corner of the internet instead of posting on social media.",
-    "tags": ["meta", "writing"],
+    "tags": [
+      "meta",
+      "writing"
+    ],
     "date": "2026-07-29",
     "readtime": "3 min read",
     "featured": true
+  },
+  {
+    "slug": "what-are-the-tech-talks",
+    "title": "What are the “tech talks”?",
+    "excerpt": "Please view the other part of this series here for more context What are the “tech talks”? Speak tech or Understanding tech, in this case, can be considered the following: How…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2024-08-07",
+    "readtime": "12 min read",
+    "featured": false
+  },
+  {
+    "slug": "disclaimer",
+    "title": "Disclaimer",
+    "excerpt": "Okay so this is already longer than I expected this would be, but I feel like leaving without detailing the work is just unjustified, it makes things even more generic than where…",
+    "tags": [
+      "substack"
+    ],
+    "date": "2024-08-07",
+    "readtime": "14 min read",
+    "featured": false
   }
 ]
