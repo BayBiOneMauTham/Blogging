@@ -1,5 +1,67 @@
 # My Blog — Setup & Maintenance Guide
 
+## Publishing Workflow
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        WRITE A POST                             │
+│                                                                 │
+│   1. Open admin panel                                           │
+│      https://baybionemautham.github.io/Blogging/admin.html     │
+│                          │                                      │
+│                          ▼                                      │
+│   2. Fill in meta bar                                           │
+│      Title · Slug · Tags · Date · Read time · Featured?        │
+│                          │                                      │
+│                          ▼                                      │
+│   3. Write in Markdown editor                                   │
+│      Live preview on the right                                  │
+│                          │                                      │
+│                          ▼                                      │
+│   4. Click "Publish Post ↓"                                     │
+│      3 files auto-download to ~/Downloads/                      │
+│      ├── your-slug.html                                         │
+│      ├── posts.json                                             │
+│      └── sitemap.xml                                            │
+│                          │                                      │
+│                          ▼                                      │
+│   5. Move files                                                 │
+│      your-slug.html  →  my-blog/posts/                         │
+│      posts.json      →  my-blog/          (replace)            │
+│      sitemap.xml     →  my-blog/          (replace)            │
+│                          │                                      │
+│                          ▼                                      │
+│   6. Push to GitHub  (pick one)                                 │
+│      ┌─────────────────┬───────────────────────────────┐       │
+│      │  Terminal       │  GitHub Desktop / Web UI      │       │
+│      │  git add .      │  Open GitHub Desktop          │       │
+│      │  git commit -m  │  → changed files show up      │       │
+│      │  git push       │  → commit & push              │       │
+│      └─────────────────┴───────────────────────────────┘       │
+│                          │                                      │
+│                          ▼                                      │
+│   7. Live in ~30 seconds                                        │
+│      https://baybionemautham.github.io/Blogging/               │
+│      index.html + blog.html auto-update from posts.json        │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Editing Existing Pages
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      EDIT A PAGE                                │
+│                                                                 │
+│   Option A — GitHub Web (simplest, no tools needed)            │
+│   github.com/BayBiOneMauTham/Blogging                          │
+│   → click file → pencil icon → edit → commit                   │
+│                                                                 │
+│   Option B — Local + push                                       │
+│   Edit file in ~/Desktop/my-blog/                              │
+│   → git add . → git commit → git push                          │
+└─────────────────────────────────────────────────────────────────┘
+```
+
 A static personal blog: warm paper-yellow theme, Akira red accent, Substack newsletter integration. No build tools, no server required — pure HTML/CSS/JS you can host anywhere.
 
 ---
